@@ -6,10 +6,11 @@ CODEC = {
 T = int(input())
 
 for i in range(T):
-    TC = [x for x in input().split()]
+    line = input()
+    TC = [x for x in line.split()]
 
     R, C = int(TC[0]), int(TC[1])
-    msg = ' '.join(TC[2:])
+    msg = ''.join(line.split('{0} {1} '.format(R, C)))
 
     result = [[0 for j in range(C)] for k in range(R)]
     binary = []
@@ -17,13 +18,11 @@ for i in range(T):
     for alpha in msg:
         binary += [int(x) for x in f'{CODEC[alpha]:05b}']
 
-    print(binary)
     row, col = 0, 0
-    minR, minC, maxR, maxC = 0, 0, R-1, C-1
+    minR, minC, maxR, maxC = 0, 1, C-1, R-1
     horizon, toggle_row, toggle_col = True, True, True
 
     for bin in binary:
-        print('result[{}][{}]={}, minR{} minC{} maxR{} maxC{}'.format(col, row, bin, minR, minC, maxR, maxC))
         result[col][row] = bin
 
         if horizon:
@@ -52,4 +51,6 @@ for i in range(T):
         else:
             col = col+1 if toggle_col else col-1
 
-    print(result)
+    for j in result:
+        for k in j: print(k, end='')
+    print()
