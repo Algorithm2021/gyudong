@@ -1,30 +1,22 @@
-def dfs(graph, start, visited=None):
-    if visited is None:
-        visited = set()
+def dfs(graph, start):
+    visited[start] = True
 
-    visited.add(start)
-
-    for next in graph[start] - visited:
-        dfs(graph, next, visited)
-
-    return visited
+    for next in graph[start]:
+        if not visited[next]:
+            dfs(graph, next)
 
 
 N = int(input())
 pair = int(input())
 
-connect = ['' for i in range(N)]
+connect = [set() for i in range(N)]
 for i in range(pair):
     p1, p2 = map(int, input().split())
 
-    connect[p1 - 1] += str(p2 - 1)
-    connect[p2 - 1] += str(p1 - 1)
+    connect[p1 - 1].add(p2 - 1)
+    connect[p2 - 1].add(p1 - 1)
 
-unique_connect = {}
-for i in range(N):
-    unique_connect[str(i)] = set(connect[i])
+visited = [False for i in range(N)]
+dfs(connect, 0)
 
-result = dfs(unique_connect, '0')
-print(result)
-
-print(len(result)-1)
+print(sum(visited)-1)
